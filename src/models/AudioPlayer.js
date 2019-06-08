@@ -54,7 +54,7 @@ class AudioPlayer {
         console.log(this.index + value < this.songs.length)
         if(this.index + value >= 0 && 
            this.index + value < songs.length ){
-            this._index += value;
+            this._index = value;
             this.loadSong();
         }
     }
@@ -198,7 +198,7 @@ class AudioPlayer {
 
             },
             back: () => {this.index--; this.player.play()},
-            next: () => {this.index++; this.player.play()},
+            next: () => {this.index++; this.player.play();},
             close: () => {window.sessionStorage.clear(); window.location = "./"},
 
         }
