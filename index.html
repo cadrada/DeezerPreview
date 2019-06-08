@@ -12,10 +12,17 @@
     <div>
         <label for="artist">Escriba un artista:</label>
         <input name="artist" type="text" id="artist">
+        <label id='msn'></label>
     </div>
 
     <script>
         var storage = window.sessionStorage;
+        let mensaje = "";
+
+        if(storage.getItem("msn") != ""){
+            let labelMns = document.querySelector("#msn");
+            labelMns.innerHTML = storage.getItem("msn");
+        }
 
         if(storage.getItem("artist")){
             redirect();
@@ -28,7 +35,11 @@
                 redirect();
             }
         }
-
+        input.onkeypress = () => {
+            let labelMns = document.querySelector("#msn");
+            labelMns.innerHTML = '';
+            storage.setItem("msn", '');
+        }
         function redirect(){
             window.location = "./player.html";
         }
