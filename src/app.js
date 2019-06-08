@@ -24,7 +24,7 @@ function start() {
     //Fetch al API
     var headers = new Headers();
     headers.append("X-RapidAPI-Host", "deezerdevs-deezer.p.rapidapi.com");
-    headers.append("X-RapidAPI-Key", "e28ad5c50dmsh44c3cb29ce67af5p10614ejsn75d41ea6a56d");
+    headers.append("X-RapidAPI-Key", "43e094658cmsh2a53bfb3830aac9p1a1fafjsne96ea508ace1");
 
     var opciones = {
         method: 'GET',
@@ -38,15 +38,31 @@ function start() {
             return response.json()
         })
         .then((json) => {
-            const data = json.data;
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                var { title_short: name, artist, album, preview: file } = data[i]
-                songs.push( new Song(name,artist.name,album.cover_big,file) );
+            storage.setItem("msn", "");
+            if(json.data == null || json.data.length == 0){
+                let artistDigitado = storage.getItem("artist");
+                window.sessionStorage.clear(); 
+                storage.setItem("msn", `Artista no encontrado: ${artistDigitado}`);
+                redirect();
             }
-            let player = document.querySelector("#player");
-            player.classList.remove("placeholder");
-            ap.loadSong();
+            else{
+                const data = json.data;
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    var { title_short: name, artist, album, preview: file } = data[i]
+                    songs.push( new Song(name,artist.name,album.cover_big,file) );
+                }
+                let player = document.querySelector("#player");
+                player.classList.remove("placeholder");
+                ap.loadSong();
+            }
+            
+            
         })
+
+
+        function redirect(){
+            window.location = "./index.html";
+        }
 
 }
